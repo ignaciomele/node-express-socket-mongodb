@@ -3,7 +3,6 @@ const app = express()
 const path = require('path')
 const mongoose = require('mongoose')
 const Item = require('./models/items')
-const config = require('config')
 
 
 mongoose.connect('mongodb://localhost:27017/demo', { useNewUrlParser: true, 
