@@ -3,29 +3,48 @@
 
 <%- include('./partials/head.ejs') %>
 
-<body>
+  <body>
 
-  <%- include('./partials/nav.ejs') %>
+    <%- include('./partials/nav.ejs') %>
 
       <div class="container">
         <ul class="collection with-header">
 
-           <% if (items.length>0) { %>     
+          <% if (items.length> 0) { %>
 
-              <% items.forEach(item => {  %>
-                <li class="collection-item">
-                  <div><%= item.name %> $<%= item.price%><a href="#!" class="secondary-content">
-                    <i class="material-icons">delete</i>
-                    <i class="material-icons">edit</i></a></div>
-                  </li>
-             %> <% })
-
-            <%}else{ %>
-              <li>There are no items</li>
-            <%}%>
-
-          </ul>
+            <% items.forEach(item=> { %>
+              <li class="collection-item" id="<%= item._id%>">
+                <div>
+                  <%= item.name %> $<%= item.price%>
+                      <div class="secondary-content">
+                        <i style="cursor:pointer;" class="material-icons"
+                          onclick="deleteItem('<%= item._id%>')">delete</i>
+                        <i style="cursor:pointer;" class="material-icons">edit</i>
+                      </div>
+                </div>
+              </li>
+              <% })}else{ %>
+                <li>There are no items</li>
+                <%}%>
+        </ul>
       </div>
-      
-</body>
+      <script>
+        async function deleteItem(id) {
+          try {
+            let response = await fetch(`http://localhost:3000/api/deleteitem/${id}`, {
+              method: "DELETE",
+              headers: {
+                'Content-type': 'application/json'
+              }
+            })
+            if (response.status === 500) return window.location.href = "http://localhost:3000/error"
+            document.getElementById(id).remove()
+          } catch (err) {
+            console.log(err)
+          }
+        }
+      </script>
+
+  </body>
+
 </html>
